@@ -131,12 +131,26 @@ void main()
 	std::list<int> lst = { 0, 1, 1, 2, 3, 5, 8, 13, 21 };
 	list_print(lst);
 	std::list<int>::iterator it = lst.begin();
-	for (int i = 0; i < index; i++) it++;
-	lst.insert(it, value);
-	list_print(lst);
-	lst.erase(--it);
-	list_print(lst);
+	try
+	{
+		if (lst.size() - 1 < index) throw std::exception("Выход за пределы списка!");
+		else
+		{
+			std::advance(it, index);
+			lst.insert(it, value);
+			list_print(lst);
+			lst.erase(--it);
+			list_print(lst);
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << endl;
+	}
+	
 #endif // STL_LIST
+
+#ifdef STL_FORWARD_LIST
 	int index;
 	int value;
 	cout << "Введите индекс вставляемого элемента:\t"; cin >> index;
@@ -144,9 +158,11 @@ void main()
 	std::forward_list<int> f_lst = { 0, 1, 1, 2, 3, 5, 8, 13, 21 };
 	f_list_print(f_lst);
 	std::forward_list<int>::iterator it = f_lst.before_begin();
-	for (int i = 0; i < index; i++) it++;
+	std::advance(it, index);
 	f_lst.insert_after(it, value);
 	f_list_print(f_lst);
 	f_lst.erase_after(it);
 	f_list_print(f_lst);
+#endif // STL_FORWARD_LIST
+
 }
